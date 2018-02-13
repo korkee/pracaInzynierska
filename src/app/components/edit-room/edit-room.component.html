@@ -1,0 +1,101 @@
+<h1 class="page-header">Edit Room</h1>
+
+<!-- Custom Success/Erro Message -->
+<div class="row show-hide-message" *ngIf="message">
+  <div [ngClass]="messageClass">
+    {{ message }}
+  </div>
+</div>
+
+<!-- Edit Room Form -->
+<form (submit)="updateRoomSubmit()" *ngIf="!loading">
+  <!-- Title Field -->
+  <div class="form-group">
+    <label for="title">Title</label>
+    <!-- Title Input -->
+    <input [disabled]="processing" type="text" name="title" placeholder="*Room Title" class="form-control"
+           [(ngModel)]="room.title"/>
+  </div>
+
+  <!-- Body Field -->
+  <div class="form-group">
+    <label for="body">Body</label>
+    <!-- Body Input -->
+    <textarea [disabled]="processing" name="body" rows="8" cols="80" [(ngModel)]="room.body" class="form-control"
+              placeholder="*Room Body"></textarea>
+  </div>
+ 
+  <div class="form-group">
+    <label for="city">City</label>
+    <input [disabled]="processing" type="text" name="city" placeholder="*Room city" class="form-control"
+           [(ngModel)]="room.city"/>
+
+  </div>
+  <div class="form-group">
+    <label for="startAt">startAt</label>
+    <input [disabled]="processing" type="date" name="from" placeholder="*Room startAt" class="form-control"
+           [(ngModel)]="room.startAt"/>
+  </div>
+  <div class="form-group">
+    <label for="endsAt">From</label>
+    <input [disabled]="processing" type="date" name="endsAt" placeholder="*Room endsAt" class="form-control"
+           [(ngModel)]="room.endsAt"/>
+  </div>
+  <!-- Delete Button -->
+  <a [routerLink]="['/delete-room/', room._id]">
+    <button [disabled]="processing" type="button" name="button" class="btn btn-danger">Delete</button>
+  </a>
+  <!-- Go Back Button -->
+  <button [disabled]="processing" type="button" name="button" class="btn btn-success" (click)="goBack()">Go Back
+  </button>
+  <!-- Save Changes Button -->
+  <button [disabled]="processing" type="submit" name="save" class="btn btn-info">Save Changes</button>
+
+</form>
+
+<!--<h1 class="page-header">Edit Room</h1>-->
+<!--<div class="row show-hide-message" *ngIf="message">-->
+<!--<div [ngClass]="messageClass">-->
+<!--{{message}}-->
+<!--</div>-->
+
+
+<!--</div>-->
+<!--<form (submit)="updateRoomSubmmit()" *ngIf="!loading">-->
+<!--<div class="form-group">-->
+<!--<label for="title">Title</label>-->
+<!--<input [disabled]="processing" type="text" name="title" placeholder="*Room Title" class="form-control"-->
+<!--[(ngModel)]="room.title" />-->
+
+<!--</div>-->
+
+<!--<div class="form-group">-->
+<!--<label for="body">Body</label>-->
+<!--<textarea [disabled]="processing" name="body" rows="8" cols="80" [(ngModel)]="room.body"-->
+<!--class="form-control" placeholder="*Room Body"></textarea>-->
+<!--</div>-->
+<!--<div class="form-group">-->
+<!--<label for="city">City</label>-->
+<!--<input [disabled]="processing" type="text" name="city" placeholder="*Room City" class="form-control"-->
+<!--[(ngModel)]="room.city" />-->
+
+<!--</div>-->
+<!--<div class="form-group">-->
+<!--<label for="from">From</label>-->
+<!--<input [disabled]="processing" type="date" name="from" placeholder="*Room From" class="form-control"-->
+<!--[(ngModel)]="room.from" />-->
+
+<!--</div>-->
+<!--<div class="form-group">-->
+<!--<label for="to">City</label>-->
+<!--<input [disabled]="processing" type="date" name="to" placeholder="*Room to" class="form-control"-->
+<!--[(ngModel)]="room.to" />-->
+
+<!--</div>-->
+
+<!--<button type="button" name="button" class="btn btn-success" (click)="goBack()">Go Back</button>-->
+<!--<button [disabled]="processing" type="submit" name="save" class="btn btn-info" (click)="goBack()">Save</button>-->
+
+
+<!--</form>-->
+

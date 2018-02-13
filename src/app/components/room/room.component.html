@@ -1,0 +1,254 @@
+<h1 class="page-header">Room Feed</h1>
+
+<!-- Custom Success/Error Message -->
+<div class="row show-hide-message" *ngIf="message && newPost">
+  <div [ngClass]="messageClass">
+    {{ message }}
+  </div>
+</div>
+
+<!-- New Post Button -->
+<button type="button" name="button" class="btn btn-warning" *ngIf="!newPost" (click)="newRoomForm()">New Post</button>
+
+<!-- Reload Button -->
+<button [disabled]="loadingRooms" type="button" name="button" class="btn btn-default" *ngIf="!newPost"
+        (click)="reloadRooms()"><span class="glyphicon glyphicon-repeat"></span>&nbsp;&nbsp;Reload
+</button>
+
+<br/>
+<br/>
+<div *ngIf="!newPost">
+<p> Filters:</p>
+<form id="filter">
+  <label>by city:</label>
+  <input id="msg" type="text" class="form-control" name="msg" [(ngModel)]="term">
+</form>
+<form id="filter2">
+  <label>by body:</label>
+  <input id="msg" type="text" class="form-control" name="msg" [(ngModel)]="term1" >
+</form>
+
+<p>Filters by date:</p>
+  <div class="form-group row">
+    <label for="example-date-input" class="col-2 col-form-label">Date</label>
+    <div class="col-10">
+      <input class="form-control" type="date" value="2011-08-19" id="example-date-input" [(ngModel)]="term2">
+    </div>
+  </div>
+<div class="form-group row">
+  <label for="example-date-input" class="col-2 col-form-label">Date</label>
+  <div class="col-10">
+    <input class="form-control" type="date" value="2011-08-19" id="example-date-input" [(ngModel)]="term3">
+  </div>
+</div>
+<!-- New Room Form -->
+<form [formGroup]="form" name="roomForm" (submit)="onRoomSubmit()" *ngIf="newPost">
+  <!-- Title Input -->
+  <div class="form-group">
+    <label for="title">Title</label>
+    <div
+      [ngClass]="{'has-success': form.controls.title.valid, 'has-error': form.controls.title.dirty && form.controls.title.errors}">
+      <!-- Title Input -->
+      <input type="text" name="title" class="form-control" placeholder="*Room Title" autocomplete="off"
+             formControlName="title"/>
+      <!-- Validation -->
+      <ul class="help-block">
+        <li *ngIf="form.controls.title.dirty && form.controls.title.errors?.required">This field is required.</li>
+        <li
+          *ngIf="(form.controls.title.dirty && form.controls.title.errors?.minlength) || (form.controls.title.dirty && form.controls.title.errors?.maxlength)">
+          Max length: 50, Min length: 5
+        </li>
+        <li *ngIf="form.controls.title.dirty && form.controls.title.errors?.alphaNumericValidation">Must be a letter or
+          number
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Body Input -->
+  <div class="form-group">
+    <label for="body">Body</label>
+    <div
+      [ngClass]="{'has-success': form.controls.body.valid, 'has-error': form.controls.body.dirty && form.controls.body.errors}">
+      <!-- Body Input -->
+      <textarea name="body" rows="8" cols="80" placeholder="*Body" class="form-control"
+                formControlName="body"></textarea>
+      <!-- Validation -->
+      <ul class="help-block">
+        <li *ngIf="form.controls.body.dirty && form.controls.body.errors?.required">This field is required.</li>
+        <li
+          *ngIf="(form.controls.body.dirty && form.controls.body.errors?.minlength) || (form.controls.body.dirty && form.controls.body.errors?.maxlength)">
+          Max length: 500, Min length: 5
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="city">City</label>
+    <div
+      [ngClass]="{'has-success': form.controls.city.valid, 'has-error': form.controls.city.dirty && form.controls.city.errors}">
+      <!-- Title Input -->
+      <input type="text" name="city" class="form-control" placeholder="*Room City" autocomplete="off"
+             formControlName="city"/>
+      <!-- Validation -->
+      <ul class="help-block">
+        <li *ngIf="form.controls.city.dirty && form.controls.city.errors?.required">This field is required.</li>
+        <li
+          *ngIf="(form.controls.city.dirty && form.controls.city.errors?.minlength) || (form.controls.city.dirty && form.controls.city.errors?.maxlength)">
+          Max length: 50, Min length: 5
+        </li>
+        <li *ngIf="form.controls.city.dirty && form.controls.city.errors?.alphaNumericValidation">Must be a letter or
+          number
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="startAt">startAt</label>
+    <div
+      [ngClass]="{'has-success': form.controls.startAt.valid, 'has-error': form.controls.startAt.dirty && form.controls.startAt.errors}">
+      <!-- startAt Input -->
+      <input type="date" name="startAt" class="form-control" placeholder="*Room startAt" autocomplete="off"
+             formControlName="startAt"/>
+      <!-- Validation -->
+      <ul class="help-block">
+        <li *ngIf="form.controls.startAt.dirty && form.controls.startAt.errors?.required">This field is required.</li>
+        <li
+          *ngIf="(form.controls.startAt.dirty && form.controls.startAt.errors?.minlength) || (form.controls.startAt.dirty && form.controls.startAt.errors?.maxlength)">
+          Max length: 50, Min length: 5
+        </li>
+        <li *ngIf="form.controls.startAt.dirty && form.controls.startAt.errors?.alphaNumericValidation">Must be a letter
+          or
+          number
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="endsAt">endsAt</label>
+    <div
+      [ngClass]="{'has-success': form.controls.endsAt.valid, 'has-error': form.controls.endsAt.dirty && form.controls.endsAt.errors}">
+      <!-- startAt Input -->
+      <input type="date" name="endsAt" class="form-control" placeholder="*Room endsAt" autocomplete="off"
+             formControlName="endsAt"/>
+      <!-- Validation -->
+      <ul class="help-block">
+        <li *ngIf="form.controls.endsAt.dirty && form.controls.endsAt.errors?.required">This field is required.</li>
+        <li
+          *ngIf="(form.controls.endsAt.dirty && form.controls.endsAt.errors?.minlength) || (form.controls.endsAt.dirty && form.controls.startAt.errors?.maxlength)">
+          Max length: 50, Min length: 5
+        </li>
+        <li *ngIf="form.controls.endsAt.dirty && form.controls.endsAt.errors?.alphaNumericValidation">Must be a letter
+          or
+          number
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="imgLink">Link to img</label>
+    <div
+      [ngClass]="{'has-success': form.controls.imgLink.valid, 'has-error': form.controls.imgLink.dirty && form.controls.imgLink.errors}">
+      <!-- startAt Input -->
+      <input type="text" name="imgLink" class="form-control" placeholder="*Room imgLink" autocomplete="off"
+             formControlName="imgLink"/>
+      <!-- Validation -->
+      <ul class="help-block">
+        <li
+          *ngIf="(form.controls.imgLink.dirty && form.controls.imgLink.errors?.minlength) || (form.controls.imgLink.dirty && form.controls.startAt.errors?.maxlength)">
+          Max length: 50, Min length: 5
+        </li>
+        <li *ngIf="form.controls.imgLink.dirty && form.controls.imgLink.errors?.alphaNumericValidation">Must be a letter
+          or
+          number
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Go Back Button -->
+  <button [disabled]="processing" type="button" name="button" (click)="goBack()" class="btn btn-warning">Go Back
+  </button>
+  <!-- Submit Button -->
+  <button [disabled]="processing || !form.valid" type="submit" name="button" class="btn btn-success">Submit</button>
+
+</form>
+<!-- New Room Form -->
+
+<!-- XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX-->
+<div *ngIf="!newPost">
+  <div class="panel panel-primary" *ngFor="let room of roomPosts |filterDate2:term3 |filterBody:term1| filterDate:term2 | filter:term">
+
+    <div class="panel-heading">
+      <h3 class="panel-title">{{ room.title }}</h3>
+    </div>
+
+    <div class="panel-body">
+      {{ room.body |filterDate}}
+    </div>
+    <div class="panel-footer">
+      <strong>Posted by: </strong>{{ room.createdBy }}
+      <br/>
+      <strong>startAt: </strong>{{ room.startAt | date:'dd MM, yyyy'  }}
+      <br/>
+      <strong>endsAt: </strong>{{ room.endsAt | date:'dd MM, yyyy'}}
+      <br/>
+      <strong>city: </strong>{{ room.city}}
+      <br/>
+      <br/>
+      <strong>reseved by: </strong>{{ room.reservedBy}}
+      <br/>
+      <br/>
+
+      <div *ngIf="username === room.createdBy">
+        <strong>Likes: </strong>{{ room.likes }}
+        <br/>
+        <strong>Dislikes: </strong>{{ room.dislikes }}
+      </div>
+
+      <a [routerLink]="['/edit-room/', room._id]" *ngIf="username === room.createdBy">
+        <button type="button" name="button" class="btn btn-sm btn-info">Edit</button>
+      </a>
+      <a [routerLink]="['/delete-room/', room._id]" *ngIf="username === room.createdBy">
+        <button type="button" name="button" class="btn btn-sm btn-danger">Delete</button>
+      </a>
+      <div class="dropdown">
+        <button [disabled]="room.likedBy.indexOf(username) > -1" type="button" name="button"
+                class="btn btn-sm btn-success" *ngIf="username !== room.createdBy" (click)="likeRoom(room._id)"><span
+          class="glyphicon glyphicon-thumbs-up">&nbsp;</span>Likes: {{ room.likes }}
+        </button>
+        <div class="dropdown-content">
+          <a [routerLink]="['/user/', liker]" *ngFor="let liker of room.likedBy">{{ liker }}</a>
+        </div>
+      </div>
+      <div class="dropdown">
+
+        <button [disabled]="room.dislikedBy.indexOf(username) > -1" type="button" name="button"
+                class="btn btn-sm btn-warning" *ngIf="username !== room.createdBy" (click)="dislikeRoom(room._id)"><span
+          class="glyphicon glyphicon-thumbs-down">&nbsp;</span>Dislikes: {{ room.dislikes }}
+        </button>
+
+        <div class="dropdown-content">
+          <a [routerLink]="['/user/', disliker]" *ngFor="let disliker of room.dislikedBy">{{ disliker }}</a>
+        </div>
+      </div>
+
+    </div>
+
+    <ul class="list-group">
+      <li class="list-group-item">
+        <button *ngIf="room.reserve !== true && room.createdBy !== username" type="button" name="button"
+                class="btn btn-sm btn-success" (click)="reserve(room._id)"><span
+          class="glyphicon glyphicon-thumbs-up">&nbsp;</span>Reserved?: {{ room.reserve }}
+        </button>
+        <br/>
+
+      </li>
+    </ul>
+
+    <img src="{{room.imgLink}}">
+  </div>
+
+
+</div>
